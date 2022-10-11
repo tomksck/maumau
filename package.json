@@ -1,0 +1,22 @@
+{
+  "name": "maumau",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Kosacki",
+  "license": "ISC",
+  "devDependencies": {
+    "prettier": "^2.7.1",
+    "typescript": "^4.8.4"
+  },
+  "dependencies": {
+    "esm": "^3.2.25"
+  }
+}
