@@ -5,6 +5,7 @@ import Card from '../models/card.js';
 import Player from '../models/player.js';
 import Game from '../models/game.js';
 import { EventEmitter } from 'events';
+import fs from 'fs';
 
 export default class GameController extends EventEmitter {
   constructor() {
@@ -65,6 +66,19 @@ export default class GameController extends EventEmitter {
     this._table = new Table({ name: 'Game 1', openCards: [cards.pop()], players: players, cards: cards });
     this._game = new Game({ table: this._table });
     this.emit('newGame', this._game);
+  }
+
+  saveGame() {
+    fs.writeFileSync('game.json', JSON.stringify(this._game));
+    this.emit('saveGame', this._game);
+  }
+
+  loadGame() {
+    const game = JSON.parse(fs.readFileSync('game.json'));
+    this._game = new Game(game);
+    this._table = this._game.getTable();
+    this._players = this._table.getPlayers();
+    this.emit('loadGame', this._game);
   }
 
   nextTurn() {

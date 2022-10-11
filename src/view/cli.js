@@ -9,6 +9,8 @@ export default class CLI {
   constructor() {
     this._game = new GameController();
     this._game.on('newGame', this.#onNewGame);
+    this._game.on('loadGame', this.#onLoadGame);
+    this._game.on('saveGame', this.#onSaveGame);
     this._game.on('newTurn', this.#onNewTurn);
     this._game.on('endGame', this.#onEndGame);
     this._game.on('error', this.#onError);
@@ -23,9 +25,13 @@ export default class CLI {
   start = () => {
     console.clear();
     this.#print('Welcome to MauMau!');
-    this.#print('Please enter the number of players:');
+    this.#print('Please enter the number of players of "l" to load saved game:');
     rl.question('', (answer) => {
-      this._game.newGame(parseInt(answer));
+      if (answer === 'l') {
+        this._game.loadGame();
+      } else {
+        this._game.newGame(parseInt(answer || 0));
+      }
     });
   };
 
@@ -36,14 +42,28 @@ export default class CLI {
     this._game.getPlayerCards().forEach((card, index) => {
       this.#print(`${index}: ${card.toString()}`);
     });
-    this.#print('Please enter the number of the card you want to throw or "t" to take a card:');
+    this.#print('Please enter the number of the card you want to throw, "t" to take a card or "s" to save the game:');
     rl.question('', (answer) => {
       if (answer === 't') {
         this._game.takeCard();
+      } else if (answer === 's') {
+        this._game.saveGame();
       } else {
         this._game.throwCard(parseInt(answer));
       }
     });
+  };
+
+  #onLoadGame = () => {
+    this.#print('Game loaded!');
+    this.#print('Players:');
+    this.#print(this._game.getPlayerNames().join(', '));
+    this._game.nextTurn();
+  };
+
+  #onSaveGame = () => {
+    this.#print('Game saved!');
+    this.#onEndGame();
   };
 
   #onNewGame = () => {
