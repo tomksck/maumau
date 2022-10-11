@@ -56,6 +56,9 @@ export default class GameController extends EventEmitter {
    * @param {Number} playerCount
    */
   newGame(playerCount) {
+    this._game = null;
+    this._table = null;
+    this._players = null;
     const cards = this.#makeCards();
     const players = new Array(playerCount).fill().map((u) => new Player({}));
     players.forEach((player, index) => player.setName(`Player ${index}`));
