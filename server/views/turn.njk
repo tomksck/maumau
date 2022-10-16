@@ -1,0 +1,19 @@
+{% extends  layout %}
+{% block  content %}
+  <h1>{{message}}</h1>
+  <p>It's {{player}}'s turn!</p>
+  {% if showCards == true %}
+    <p>Table card: {{tableCard}}</p>
+    <p>Here are your cards:</p>
+    <ul>
+      {% for card in cards %}
+        <li><a href={{cardUrl}}{{loop.index0}}>{{card}}</a></li>
+      {% endfor %}
+    </ul>
+    </br>
+    <a href={{url}}>Take Card</a> 
+  {% else %}
+    <p>Click to see your cards!</p>
+    <a href={{url}}>{{text}}</a>
+  {% endif %}
+{% endblock %}

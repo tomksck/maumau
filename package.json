@@ -13,6 +13,7 @@
   "author": "Tom Kosacki",
   "license": "ISC",
   "devDependencies": {
+    "@popperjs/core": "^2.11.6",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4"
   },
@@ -22,6 +23,10 @@
     "bootstrap": "^5.2.2",
     "esm": "^3.2.25",
     "express": "^4.18.2",
-    "jquery": "^3.6.1"
+    "jquery": "^3.6.1",
+    "nunjucks": "^3.2.3"
+  },
+  "peerDependencies": {
+    "@popperjs/core": "^2.11.6"
   }
 }

@@ -1,0 +1,11 @@
+{% extends  layout %}
+{% block  content %}
+  <h1>{{message}}</h1>
+  <p>Here are the players:</p>
+  <ul>
+    {% for  player  in  players %}
+      <li>{{player}}</li>
+    {% endfor %}
+  </ul>
+  <a href={{url}}>Start Game</a>
+{% endblock %}
