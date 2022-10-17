@@ -5,9 +5,11 @@
   {% if showCards == true %}
     <p>Table card: {{tableCard}}</p>
     <p>Here are your cards:</p>
+    {%- from 'card.njk' import card -%}
     <ul>
-      {% for card in cards %}
-        <li><a href={{cardUrl}}{{loop.index0}}>{{card}}</a></li>
+      {% for mycard in cards %}
+        {% set newCardUrl = [cardUrl, loop.index0] | join %}
+        <li>{{ card({url: newCardUrl, card: mycard}) }}</li>
       {% endfor %}
     </ul>
     </br>

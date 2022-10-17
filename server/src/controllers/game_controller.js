@@ -103,8 +103,24 @@ export default class GameController extends EventEmitter {
     if (!card || !topCard) {
       this.emit('error', 'No card to throw');
     }
-    if (card.getColor() === topCard.getColor() || card.getValue() === topCard.getValue()) {
+    const value = card.getValue();
+    const color = card.getColor();
+    if (color === topCard.getColor() || value === topCard.getValue() || value === 13 || value === 8 || value === 11) {
       this._table.putCard(card);
+      switch (value) {
+        case 7:
+          Array(2)
+            .fill()
+            .forEach(() => this._players[this._game.getNextPlayer()].takeCard(this._table.getTopCard()));
+          break;
+        case 13:
+          Array(4)
+            .fill()
+            .forEach(() => this._players[this._game.getNextPlayer()].takeCard(this._table.getTopCard()));
+          break;
+        default:
+          break;
+      }
       if (this.#currentPlayer().getCards().length === 0) {
         this.emit('playerWon', this.#currentPlayer());
         return;
@@ -126,7 +142,7 @@ export default class GameController extends EventEmitter {
   #makeCards() {
     const cards = [];
     for (let i = 0; i < 4; i++) {
-      for (let j = 0; j < 13; j++) {
+      for (let j = 7; j <= 13; j++) {
         cards.push(new Card({ color: i, value: j }));
       }
     }
