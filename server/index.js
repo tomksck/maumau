@@ -113,10 +113,17 @@ app.get('/game/turn/take', async (req, res) => {
 });
 
 app.get('/game/:playerCount', async (req, res) => {
-  game.removeAllListeners();
   const game = new GameController();
+  game.removeAllListeners();
   game.once('newGame', () => {
-    res.send('New game started!');
+    const data = {
+      title: 'MauMau',
+      message: 'New game started!',
+      players: game.getPlayerNames(),
+      layout: 'layout.njk',
+      url: '/game/turn'
+    };
+    res.render('game.njk', data);
   });
   game.newGame(parseInt(req.params.playerCount));
 });

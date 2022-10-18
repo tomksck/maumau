@@ -20,7 +20,7 @@ export default class Game extends Model {
     return this._currentPlayer;
   }
 
-  getNextPLayer() {
+  getNextPlayer() {
     return (this._currentPlayer + 1) % this._table.getPlayerCount();
   }
 

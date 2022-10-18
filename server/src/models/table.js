@@ -38,6 +38,10 @@ export default class Table extends Model {
     return this._players;
   }
 
+  getPlayerCount() {
+    return this._players.length;
+  }
+
   /**
    *
    * @returns {Card | null}
