@@ -67,7 +67,7 @@ app.get('/game/turn/throw', async (req, res) => {
     tableCard: game.getTableCard().toString(),
     cardUrl: '/game/turn/throw/',
     cards: game.getPlayerCards().map((card, index) => {
-      return card.toString();
+      return { value: card.getValue(), color: card.getCssClass() };
     }),
     url: '/game/turn/take'
   };

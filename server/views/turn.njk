@@ -9,7 +9,7 @@
     <ul>
       {% for mycard in cards %}
         {% set newCardUrl = [cardUrl, loop.index0] | join %}
-        <li>{{ card({url: newCardUrl, card: mycard}) }}</li>
+        <li>{{ card({url: newCardUrl, value: mycard.value, color: mycard.color}) }}</li>
       {% endfor %}
     </ul>
     </br>

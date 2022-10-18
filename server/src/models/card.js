@@ -13,6 +13,18 @@ export default class Card extends Model {
     super();
     this._color = data.color || 0;
     this._value = data.value || 0;
+    this._cssClass = (() => {
+      switch (this._color) {
+        case 0:
+          return 'heart';
+        case 1:
+          return 'diamond';
+        case 2:
+          return 'spade';
+        case 3:
+          return 'club';
+      }
+    })();
   }
 
   toString() {
@@ -25,6 +37,10 @@ export default class Card extends Model {
 
   getValue() {
     return this._value;
+  }
+
+  getCssClass() {
+    return this._cssClass;
   }
 
   async save() {
