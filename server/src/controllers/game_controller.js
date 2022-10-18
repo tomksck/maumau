@@ -105,7 +105,7 @@ export default class GameController extends EventEmitter {
     }
     const value = card.getValue();
     const color = card.getColor();
-    if (color === topCard.getColor() || value === topCard.getValue() || value === 13 || value === 8 || value === 11) {
+    if (color === topCard.getColor() || value === topCard.getValue() || value === 14 || value === 8 || value === 11) {
       this._table.putCard(card);
       switch (value) {
         case 7:
@@ -113,7 +113,7 @@ export default class GameController extends EventEmitter {
             .fill()
             .forEach(() => this._players[this._game.getNextPlayer()].takeCard(this._table.getTopCard()));
           break;
-        case 13:
+        case 14:
           Array(4)
             .fill()
             .forEach(() => this._players[this._game.getNextPlayer()].takeCard(this._table.getTopCard()));
@@ -142,7 +142,7 @@ export default class GameController extends EventEmitter {
   #makeCards() {
     const cards = [];
     for (let i = 0; i < 4; i++) {
-      for (let j = 7; j <= 13; j++) {
+      for (let j = 7; j <= 14; j++) {
         cards.push(new Card({ color: i, value: j }));
       }
     }

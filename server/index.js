@@ -2,12 +2,14 @@ import express from 'express';
 import nunjucks from 'nunjucks';
 import bodyParser from 'body-parser';
 import GameController from './src/controllers/game_controller.js';
+import path from 'path';
 
 const PORT = process.env.PORT || 3000;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+app.use('/assets', express.static(path.resolve() + '/server/public'));
 
 nunjucks.configure('server/views', {
   autoescape: true,

@@ -1,0 +1,27 @@
+body {
+  background-color: #461e52;
+}
+body h1 {
+  color: #dd517f;
+  size: 20px;
+}
+body h2 {
+  color: #e68e36;
+  size: 18px;
+}
+body .container {
+  background-color: #556dc8;
+}
+body .container h3 {
+  color: #7998ee;
+  size: 14px;
+}
+body .container .light-bg {
+  background-color: #7998ee;
+}
+.container {
+  background-color: #556dc8;
+}
+.light-bg {
+  background-color: #7998ee;
+}
