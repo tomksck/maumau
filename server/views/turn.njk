@@ -1,17 +1,21 @@
 {% extends  layout %}
 {% block  content %}
-    {%- from 'card.njk' import card -%}
+  {%- from 'card.njk' import card -%}
   <h1>{{message}}</h1>
-  <p>It's {{player}}'s turn!</p>
+  <h2>It's {{player}}'s turn!</h2>
   {% if showCards == true %}
-    <p>Table card: {{tableCard}}</p>
-    <p>Here are your cards:</p>
-      {% for mycard in cards %}
-        {% set newCardUrl = [cardUrl, loop.index0] | join %}
-        <div>{{ card({url: newCardUrl, value: mycard.value, color: mycard.color}) }}</div>
-      {% endfor %}
-    </br>
-    <a href={{url}}>Take Card</a> 
+    <div class="table__cards">
+        {{ card({value: tableCard.value, color: tableCard.color})}}
+        {{ card({url: url, value: "back"}) }}
+    </div>
+    <div class="card__collection">
+      <ul>
+        {% for mycard in cards %}
+          {% set newCardUrl = [cardUrl, loop.index0] | join %}
+          <li>{{ card({url: newCardUrl, value: mycard.value, color: mycard.color}) }}</li>
+        {% endfor %}
+      </ul>
+    </div>
   {% else %}
     <p>Click to see your cards!</p>
     <a href={{url}}>{{text}}</a>

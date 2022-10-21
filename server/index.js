@@ -66,7 +66,7 @@ app.get('/game/turn/throw', async (req, res) => {
     message: 'Please throw a card or Take one',
     layout: 'layout.njk',
     showCards: true,
-    tableCard: game.getTableCard().toString(),
+    tableCard: { value: game.getTableCard().getValue(), color: game.getTableCard().getCssClass() },
     cardUrl: '/game/turn/throw/',
     cards: game.getPlayerCards().map((card, index) => {
       return { value: card.getValue(), color: card.getCssClass() };

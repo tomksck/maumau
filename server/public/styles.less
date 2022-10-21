@@ -15,6 +15,10 @@ body {
     color: @secondary;
     size: 18px;
   }
+  p {
+    color: @secondary;
+    size: 16px;
+  }
   .container {
     background-color: @container;
     h3 {
@@ -25,6 +29,56 @@ body {
       background-color: @light_bg;
     }
   }
+  .card__collection {
+    background-color: @light_bg;
+    position: fixed;
+    width: 100%;
+    height: 40%;
+    left: 50%;
+    translate: -50%;
+    bottom: 0%;
+    ul {
+      padding-inline-start: 0%;
+      display: inline-flex;
+      align-items: stretch;
+      > li {
+        margin: 5px;
+        display: flex;
+        .card__image {
+          height: 90%;
+          width: auto;
+          text-align: center;
+          img {
+            max-width: 100%;
+            max-height: 100%;
+          }
+        }
+      }
+    }
+  }
+  .table__cards {
+    background-color: @light_bg;
+    position: fixed;
+    width: 20%;
+    height: 30%;
+    left: 50%;
+    top: 10%;
+    translate: -50%;
+    display: flex;
+    .card__image {
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      img {
+        max-width: 100%;
+        max-height: 100%;
+      }
+    }
+  }
+}
+
+ul {
+  list-style-type: none;
 }
 
 .container {
