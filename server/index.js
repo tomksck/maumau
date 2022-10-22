@@ -16,7 +16,7 @@ nunjucks.configure('server/views', {
   express: app
 });
 
-const game = new GameController();
+var game = new GameController();
 
 app.listen(PORT, () => {
   console.log('Server is running on port ' + PORT);
@@ -29,11 +29,13 @@ app.get('/', async (req, res) => {
 });
 
 app.get('/game', async (req, res) => {
+  if (game == null) {
+    res.redirect('/');
+    return;
+  }
   game.removeAllListeners();
   game.once('newGame', () => {
     const data = {
-      title: 'MauMau',
-      message: 'New game started!',
       players: game.getPlayerNames(),
       layout: 'layout.njk',
       url: '/game/turn'
@@ -44,6 +46,10 @@ app.get('/game', async (req, res) => {
 });
 
 app.get('/game/turn', async (req, res) => {
+  if (!game.isRunning()) {
+    res.redirect('/');
+    return;
+  }
   game.removeAllListeners();
   game.once('newTurn', () => {
     const data = {
@@ -60,6 +66,10 @@ app.get('/game/turn', async (req, res) => {
 });
 
 app.get('/game/turn/throw', async (req, res) => {
+  if (!game.isRunning()) {
+    res.redirect('/');
+    return;
+  }
   game.removeAllListeners();
   const data = {
     player: game.getPlayerName(),
@@ -77,17 +87,13 @@ app.get('/game/turn/throw', async (req, res) => {
 });
 
 app.get('/game/turn/throw/:card', async (req, res) => {
+  if (!game.isRunning()) {
+    res.redirect('/');
+    return;
+  }
   game.removeAllListeners();
   game.once('threwCard', (player, card) => {
-    const data = {
-      player: game.getPlayerName(),
-      layout: 'layout.njk',
-      showCards: false,
-      message: `${player.getName()} threw ${card.toString()}`,
-      url: '/game/turn',
-      text: 'Next Turn'
-    };
-    res.render('turn.njk', data);
+    res.redirect('/game/turn');
   });
   game.once('cardNotThrown', () => {
     const data = {
@@ -107,16 +113,19 @@ app.get('/game/turn/throw/:card', async (req, res) => {
 });
 
 app.get('/game/turn/take', async (req, res) => {
+  if (!game.isRunning()) {
+    res.redirect('/');
+    return;
+  }
   game.removeAllListeners();
   game.once('tookCard', (player, card) => {
-    res.send(player.getName() + ' took ' + card.toString() + '<br><a href="/game/turn">Next Turn</a>');
+    res.redirect('back');
   });
   game.takeCard();
 });
 
 app.get('/game/:playerCount', async (req, res) => {
   game.removeAllListeners();
-  const game = new GameController();
   game.once('newGame', () => {
     res.send('New game started!');
   });

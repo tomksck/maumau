@@ -13,7 +13,10 @@
   "author": "Tom Kosacki",
   "license": "ISC",
   "devDependencies": {
+    "@babel/core": "^7.19.6",
+    "@babel/preset-env": "^7.19.4",
     "@popperjs/core": "^2.11.6",
+    "jquery": "^3.6.1",
     "less": "^4.1.3",
     "prettier": "^2.7.1",
     "typescript": "^4.8.4"
@@ -24,7 +27,6 @@
     "bootstrap": "^5.2.2",
     "esm": "^3.2.25",
     "express": "^4.18.2",
-    "jquery": "^3.6.1",
     "nunjucks": "^3.2.3"
   },
   "peerDependencies": {

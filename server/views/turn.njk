@@ -17,7 +17,10 @@
       </ul>
     </div>
   {% else %}
-    <p>Click to see your cards!</p>
-    <a href={{url}}>{{text}}</a>
+    <div class="container__show">
+      <form action="{{url}}" method="GET">
+        <input type="submit" value="Show Cards" />
+      </form>
+    </div>
   {% endif %}
 {% endblock %}

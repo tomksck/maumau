@@ -19,6 +19,10 @@ export default class GameController extends EventEmitter {
     return this._table.getPlayer(this._game.getCurrentPlayer());
   }
 
+  isRunning() {
+    return this._game !== null && this._table !== null && this._players !== null;
+  }
+
   /**
    *
    * @returns {String} player name
