@@ -45,6 +45,37 @@ app.get('/game', async (req, res) => {
   game.newGame(2);
 });
 
+app.post('/game', async (req, res) => {
+  const data = {
+    playerCount: parseInt(req.body.playerCount),
+    layout: 'layout.njk',
+    url: '/game/turn'
+  };
+  res.render('game.njk', data);
+});
+
+app.post('/game/players', async (req, res) => {
+  game = new GameController();
+  let tmp = 0;
+  let player;
+  const players = [];
+  while ((player = req.body[`player${tmp}`]) != null) {
+    players.push(player);
+    tmp++;
+  }
+
+  game.removeAllListeners();
+  game.once('newGame', () => {
+    const data = {
+      players: game.getPlayerNames(),
+      layout: 'layout.njk',
+      url: '/game/turn'
+    };
+    res.render('game.njk', data);
+  });
+  game.newGame(tmp, players);
+});
+
 app.get('/game/turn', async (req, res) => {
   if (!game.isRunning()) {
     res.redirect('/');
@@ -122,12 +153,4 @@ app.get('/game/turn/take', async (req, res) => {
     res.redirect('back');
   });
   game.takeCard();
-});
-
-app.get('/game/:playerCount', async (req, res) => {
-  game.removeAllListeners();
-  game.once('newGame', () => {
-    res.send('New game started!');
-  });
-  game.newGame(parseInt(req.params.playerCount));
 });

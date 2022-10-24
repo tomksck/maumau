@@ -7,6 +7,8 @@
 // Path: server/assets/styles.less
 body {
   background-color: @background;
+  grid-template-columns: [col2] 40px [col2] 50px [col3] auto [col4] 50px [col5] 40px [end];
+  grid-template-rows: [row1] 12% [row2] auto [row3] 42% [end-row];
   h1 {
     color: @primary;
     size: 20px;
@@ -16,6 +18,10 @@ body {
     size: 18px;
   }
   p {
+    color: @secondary;
+    size: 16px;
+  }
+  .text {
     color: @secondary;
     size: 16px;
   }
@@ -62,7 +68,7 @@ body {
     translate: -50%;
     bottom: 0%;
     ul {
-      padding-inline-start: 0%;
+      padding-inline-start: 0;
       display: inline-flex;
       align-items: stretch;
       > li {
@@ -71,7 +77,7 @@ body {
           margin: 5%;
           img {
             max-width: 100%;
-            max-height: 100%;
+            max-height: 400px;
           }
         }
       }

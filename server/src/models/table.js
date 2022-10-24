@@ -40,6 +40,14 @@ export default class Table extends Model {
 
   /**
    *
+   * @returns {Number} Number of players in the table
+   */
+  getPlayerCount() {
+    return this._players.length;
+  }
+
+  /**
+   *
    * @returns {Card | null}
    */
   getTopCard() {
@@ -49,8 +57,8 @@ export default class Table extends Model {
     if (this._openCards.length < 2) {
       return null;
     }
-    this._cards = this._openCards[(0, this._openCards.length - 2)];
-    this._openCards = [...this._openCards[this._openCards.length - 1]];
+    this._cards = [...this._openCards.slice(0, this._openCards.length - 2)];
+    this._openCards = [this._openCards[this._openCards.length - 1]];
     return this._cards.pop();
   }
 

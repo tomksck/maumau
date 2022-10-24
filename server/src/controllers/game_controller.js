@@ -58,14 +58,15 @@ export default class GameController extends EventEmitter {
   /**
    *
    * @param {Number} playerCount
+   * @param {Array.<String> | undefined} playerNames
    */
-  newGame(playerCount) {
+  newGame(playerCount, playerNames) {
     this._game = null;
     this._table = null;
     this._players = null;
     const cards = this.#makeCards();
     const players = new Array(playerCount).fill().map((u) => new Player({}));
-    players.forEach((player, index) => player.setName(`Player ${index}`));
+    players.forEach((player, index) => player.setName(playerNames ? (playerNames[index] ? playerNames[index] : `Player ${index}`) : `Player ${index}`));
     for (let i = 0; i < playerCount * 7; i++) {
       players[i % playerCount].takeCard(cards.pop());
     }

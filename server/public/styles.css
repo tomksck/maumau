@@ -1,5 +1,7 @@
 body {
   background-color: #461e52;
+  grid-template-columns: [col2] 40px [col2] 50px [col3] auto [col4] 50px [col5] 40px [end];
+  grid-template-rows: [row1] 12% [row2] auto [row3] 42% [end-row];
 }
 body h1 {
   color: #dd517f;
@@ -10,6 +12,10 @@ body h2 {
   size: 18px;
 }
 body p {
+  color: #e68e36;
+  size: 16px;
+}
+body .text {
   color: #e68e36;
   size: 16px;
 }
@@ -55,7 +61,7 @@ body .card__collection {
   bottom: 0%;
 }
 body .card__collection ul {
-  padding-inline-start: 0%;
+  padding-inline-start: 0;
   display: inline-flex;
   align-items: stretch;
 }
@@ -67,7 +73,7 @@ body .card__collection ul > li .card__image {
 }
 body .card__collection ul > li .card__image img {
   max-width: 100%;
-  max-height: 100%;
+  max-height: 400px;
 }
 body .table__cards {
   position: fixed;
