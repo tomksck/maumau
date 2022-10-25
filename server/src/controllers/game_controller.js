@@ -67,6 +67,9 @@ export default class GameController extends EventEmitter {
     const cards = this.#makeCards();
     const players = new Array(playerCount).fill().map((u) => new Player({}));
     players.forEach((player, index) => player.setName(playerNames ? (playerNames[index] ? playerNames[index] : `Player ${index}`) : `Player ${index}`));
+    players.forEach((player) => {
+      console.log(player);
+    });
     for (let i = 0; i < playerCount * 7; i++) {
       players[i % playerCount].takeCard(cards.pop());
     }
@@ -99,6 +102,8 @@ export default class GameController extends EventEmitter {
     if (card) {
       this.#currentPlayer().takeCard(card);
       this.emit('tookCard', this.#currentPlayer(), card);
+    } else {
+      this.emit('noMoreCards');
     }
   }
 

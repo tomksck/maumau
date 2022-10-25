@@ -4,7 +4,7 @@
     <form action="/game/players" method="post">
       {% for i in range(0,playerCount) %}
         <label class="text" for="player{{ i }}">Player {{ i }} Name</label>
-        <input type="text" name="player{{ i }}" id="player{{ i }}" />
+        <input type="text" name="player{{ i }}" id="player{{ i }}" /><br>
       {% endfor %}
       <input type="submit" value="Submit" />
     </form>

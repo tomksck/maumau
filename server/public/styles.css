@@ -1,7 +1,5 @@
 body {
   background-color: #461e52;
-  grid-template-columns: [col2] 40px [col2] 50px [col3] auto [col4] 50px [col5] 40px [end];
-  grid-template-rows: [row1] 12% [row2] auto [row3] 42% [end-row];
 }
 body h1 {
   color: #dd517f;
@@ -12,8 +10,12 @@ body h2 {
   size: 18px;
 }
 body p {
-  color: #e68e36;
+  color: #f8af58;
   size: 16px;
+}
+body li {
+  color: #f8af58;
+  size: 14px;
 }
 body .text {
   color: #e68e36;
@@ -28,6 +30,26 @@ body .container h3 {
 }
 body .container .light-bg {
   background-color: #7998ee;
+}
+body .topnav {
+  background-color: #333;
+  overflow: hidden;
+}
+body .topnav a {
+  float: left;
+  color: #e68e36;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 17px;
+}
+body .topnav a :hover {
+  background-color: #7998ee;
+  color: black;
+}
+body .topnav a .active {
+  background-color: #dd517f;
+  color: white;
 }
 body .container__show {
   position: fixed;
@@ -70,6 +92,17 @@ body .card__collection ul > li {
 }
 body .card__collection ul > li .card__image {
   margin: 5%;
+}
+body .card__collection ul > li .card__image.new {
+  animation: superman-fly-right ease-in-out 0.5s forwards;
+}
+@keyframes superman-fly-right {
+  to {
+    transform: translateX(0);
+  }
+  from {
+    transform: translateX(100vw);
+  }
 }
 body .card__collection ul > li .card__image img {
   max-width: 100%;

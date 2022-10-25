@@ -3,12 +3,11 @@
 @secondary: #e68e36;
 @container: #556dc8;
 @light_bg: #7998ee;
+@light_secondary: #f8af58;
 
 // Path: server/assets/styles.less
 body {
   background-color: @background;
-  grid-template-columns: [col2] 40px [col2] 50px [col3] auto [col4] 50px [col5] 40px [end];
-  grid-template-rows: [row1] 12% [row2] auto [row3] 42% [end-row];
   h1 {
     color: @primary;
     size: 20px;
@@ -18,9 +17,15 @@ body {
     size: 18px;
   }
   p {
-    color: @secondary;
+    color: @light_secondary;
     size: 16px;
   }
+
+  li {
+    color: @light_secondary;
+    size: 14px;
+  }
+
   .text {
     color: @secondary;
     size: 16px;
@@ -35,6 +40,28 @@ body {
       background-color: @light_bg;
     }
   }
+
+  .topnav {
+    background-color: #333;
+    overflow: hidden;
+    a {
+      float: left;
+      color: @secondary;
+      text-align: center;
+      padding: 14px 16px;
+      text-decoration: none;
+      font-size: 17px;
+      :hover {
+        background-color: @light_bg;
+        color: black;
+      }
+      .active {
+        background-color: @primary;
+        color: white;
+      }
+    }
+  }
+
   .container__show {
     position: fixed;
     left: 50%;
@@ -43,7 +70,6 @@ body {
     height: 20%;
     display: flex;
     justify-content: center;
-
     input[type='submit'] {
       border: 1px solid @primary;
       background-color: @background;
@@ -75,6 +101,17 @@ body {
         display: flex;
         .card__image {
           margin: 5%;
+          &.new {
+            animation: superman-fly-right ease-in-out 0.5s forwards;
+          }
+          @keyframes superman-fly-right {
+            to {
+              transform: translateX(0);
+            }
+            from {
+              transform: translateX(100vw);
+            }
+          }
           img {
             max-width: 100%;
             max-height: 400px;
