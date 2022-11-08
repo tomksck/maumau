@@ -160,7 +160,7 @@ app.use(function (req, res, next) {
 
   // respond with html page
   if (req.accepts('html')) {
-    res.render('<body><h1>404</h1></body>', { url: req.url });
+    res.render('040.njk', { layout: 'layout.njk' });
     return;
   }
 

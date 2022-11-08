@@ -1,5 +1,5 @@
 {%- macro card(params) -%}
-<a href="{{ params.url }}" class="card">
+<a href="{{ params.url }}">
     <div class="card__image new">
         {% if params.color %}
             <img class="grow" src="/assets/cards/{{params.color}}-{{params.value}}.png"></img>
