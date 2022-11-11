@@ -1,11 +1,11 @@
 {%- macro card(params) -%}
-<a href="{{ params.url }}">
-    <div class="card__image new">
+<div class="card__container" id="card__{{ params.url }}" {% if params.fade %} onclick="fade('{{ params.url }}')" {% else %} onclick="location.href='{{params.url}}'" {% endif %}>
+    <div class="card__image {% if params.in %} {{ params.in }} {% else %} new {% endif %}">
         {% if params.color %}
             <img class="grow" src="/assets/cards/{{params.color}}-{{params.value}}.png"></img>
         {% else %}
             <img class="grow" src="/assets/cards/{{params.value}}.png"></img>
         {% endif %}
     </div>
-</a>
+</div>
 {%- endmacro -%}

@@ -55,22 +55,46 @@ body {
       align-items: stretch;
       > li {
         display: flex;
-        .card__image {
-          margin: 5%;
-          &.new {
-            animation: superman-fly-right ease-in-out 0.5s forwards;
+        .card__container {
+          &.fade {
+            animation: superman-fly-up ease-in-out 0.5s forwards;
           }
-          @keyframes superman-fly-right {
+          @keyframes superman-fly-up {
             to {
-              transform: translateX(0);
+              transform: translateY(-100vw);
             }
             from {
-              transform: translateX(100vw);
+              transform: translateY(0);
             }
           }
-          img {
-            max-width: 100%;
-            max-height: 400px;
+          .card__image {
+            margin: 5%;
+            &.new {
+              animation: superman-fly-right ease-in-out 0.5s forwards;
+            }
+            @keyframes superman-fly-right {
+              to {
+                transform: translateX(0);
+              }
+              from {
+                transform: translateX(100vw);
+              }
+            }
+            &.out {
+              animation: superman-fly-left ease-in-out 0.5s forwards;
+            }
+            @keyframes superman-fly-left {
+              to {
+                transform: translateX(-100vw);
+              }
+              from {
+                transform: translateX(0);
+              }
+            }
+            img {
+              max-width: 100%;
+              max-height: 400px;
+            }
           }
         }
       }
@@ -88,6 +112,50 @@ body {
     padding: 2%;
     .card__image {
       margin: 5%;
+      &.out__right {
+        animation: superman-fly-out-right ease-in-out 0.5s forwards;
+      }
+      @keyframes superman-fly-out-right {
+        to {
+          transform: translateX(100vw);
+        }
+        from {
+          transform: translateX(0);
+        }
+      }
+      &.out__left {
+        animation: superman-fly-out-left ease-in-out 0.5s forwards;
+      }
+      @keyframes superman-fly-out-left {
+        to {
+          transform: translateX(-100vw);
+        }
+        from {
+          transform: translateX(0);
+        }
+      }
+      &.in__right {
+        animation: superman-fly-in-right ease-in-out 0.5s forwards;
+      }
+      @keyframes superman-fly-in-right {
+        to {
+          transform: translateX(0);
+        }
+        from {
+          transform: translateX(100vw);
+        }
+      }
+      &.in__left {
+        animation: superman-fly-in-left ease-in-out 0.5s forwards;
+      }
+      @keyframes superman-fly-in-left {
+        to {
+          transform: translateX(0);
+        }
+        from {
+          transform: translateX(-100vw);
+        }
+      }
       img {
         max-width: 100%;
         max-height: 100%;
@@ -107,7 +175,7 @@ input[type='text'] {
 
 input[type='submit'] {
   background-color: $secondary;
-  color: $light_bg;
+  color: $background;
   border: 1px solid $light_secondary;
   border-radius: 5px;
   padding: 5px;
@@ -116,7 +184,7 @@ input[type='submit'] {
 
 button {
   background-color: $secondary;
-  color: $light_bg;
+  color: $background;
   border: 1px solid $light_secondary;
   border-radius: 5px;
   padding: 5px;

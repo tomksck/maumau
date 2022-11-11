@@ -48,10 +48,30 @@ body .card__collection ul {
 body .card__collection ul > li {
   display: flex;
 }
-body .card__collection ul > li .card__image {
+body .card__collection ul > li .card__container.fade {
+  -webkit-animation: superman-fly-up ease-in-out 0.5s forwards;
+          animation: superman-fly-up ease-in-out 0.5s forwards;
+}
+@-webkit-keyframes superman-fly-up {
+  to {
+    transform: translateY(-100vw);
+  }
+  from {
+    transform: translateY(0);
+  }
+}
+@keyframes superman-fly-up {
+  to {
+    transform: translateY(-100vw);
+  }
+  from {
+    transform: translateY(0);
+  }
+}
+body .card__collection ul > li .card__container .card__image {
   margin: 5%;
 }
-body .card__collection ul > li .card__image.new {
+body .card__collection ul > li .card__container .card__image.new {
   -webkit-animation: superman-fly-right ease-in-out 0.5s forwards;
           animation: superman-fly-right ease-in-out 0.5s forwards;
 }
@@ -71,7 +91,27 @@ body .card__collection ul > li .card__image.new {
     transform: translateX(100vw);
   }
 }
-body .card__collection ul > li .card__image img {
+body .card__collection ul > li .card__container .card__image.out {
+  -webkit-animation: superman-fly-left ease-in-out 0.5s forwards;
+          animation: superman-fly-left ease-in-out 0.5s forwards;
+}
+@-webkit-keyframes superman-fly-left {
+  to {
+    transform: translateX(-100vw);
+  }
+  from {
+    transform: translateX(0);
+  }
+}
+@keyframes superman-fly-left {
+  to {
+    transform: translateX(-100vw);
+  }
+  from {
+    transform: translateX(0);
+  }
+}
+body .card__collection ul > li .card__container .card__image img {
   max-width: 100%;
   max-height: 400px;
 }
@@ -89,6 +129,86 @@ body .table__cards {
 body .table__cards .card__image {
   margin: 5%;
 }
+body .table__cards .card__image.out__right {
+  -webkit-animation: superman-fly-out-right ease-in-out 0.5s forwards;
+          animation: superman-fly-out-right ease-in-out 0.5s forwards;
+}
+@-webkit-keyframes superman-fly-out-right {
+  to {
+    transform: translateX(100vw);
+  }
+  from {
+    transform: translateX(0);
+  }
+}
+@keyframes superman-fly-out-right {
+  to {
+    transform: translateX(100vw);
+  }
+  from {
+    transform: translateX(0);
+  }
+}
+body .table__cards .card__image.out__left {
+  -webkit-animation: superman-fly-out-left ease-in-out 0.5s forwards;
+          animation: superman-fly-out-left ease-in-out 0.5s forwards;
+}
+@-webkit-keyframes superman-fly-out-left {
+  to {
+    transform: translateX(-100vw);
+  }
+  from {
+    transform: translateX(0);
+  }
+}
+@keyframes superman-fly-out-left {
+  to {
+    transform: translateX(-100vw);
+  }
+  from {
+    transform: translateX(0);
+  }
+}
+body .table__cards .card__image.in__right {
+  -webkit-animation: superman-fly-in-right ease-in-out 0.5s forwards;
+          animation: superman-fly-in-right ease-in-out 0.5s forwards;
+}
+@-webkit-keyframes superman-fly-in-right {
+  to {
+    transform: translateX(0);
+  }
+  from {
+    transform: translateX(100vw);
+  }
+}
+@keyframes superman-fly-in-right {
+  to {
+    transform: translateX(0);
+  }
+  from {
+    transform: translateX(100vw);
+  }
+}
+body .table__cards .card__image.in__left {
+  -webkit-animation: superman-fly-in-left ease-in-out 0.5s forwards;
+          animation: superman-fly-in-left ease-in-out 0.5s forwards;
+}
+@-webkit-keyframes superman-fly-in-left {
+  to {
+    transform: translateX(0);
+  }
+  from {
+    transform: translateX(-100vw);
+  }
+}
+@keyframes superman-fly-in-left {
+  to {
+    transform: translateX(0);
+  }
+  from {
+    transform: translateX(-100vw);
+  }
+}
 body .table__cards .card__image img {
   max-width: 100%;
   max-height: 100%;
@@ -105,7 +225,7 @@ input[type=text] {
 
 input[type=submit] {
   background-color: #e68e36;
-  color: #65737e;
+  color: #343d46;
   border: 1px solid #f8af58;
   border-radius: 5px;
   padding: 5px;
@@ -114,7 +234,7 @@ input[type=submit] {
 
 button {
   background-color: #e68e36;
-  color: #65737e;
+  color: #343d46;
   border: 1px solid #f8af58;
   border-radius: 5px;
   padding: 5px;
