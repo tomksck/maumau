@@ -32,7 +32,7 @@ function startGame(url) {
 }
 
 function fade(url, data) {
-  var element = document.getElementById('card__' + url);
+  const element = document.getElementById('card__' + url);
   element.classList.add('fade');
   setTimeout(function () {
     const tableCards = document.querySelectorAll('.table__cards .card__container');
