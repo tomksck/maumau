@@ -128,18 +128,15 @@ app.get('/game/turn/throw/:card', async (req, res) => {
   });
   game.once('cardNotThrown', () => {
     const data = {
-      player: game.getPlayerName(),
-      layout: 'layout.njk',
-      showCards: false,
-      message: 'Card not thrown!',
-      url: '/game/turn/throw',
-      text: 'Retry'
+      error: 'Retry'
     };
-    res.render('turn.njk', data);
+    res.send(data);
   });
   game.once('playerWon', (player) => {
     res.send(player.getName() + ' won! <br><a href="/game">New Game</a>');
   });
+  console.log('throwing ' + parseInt(req.params.card));
+  console.log(game.getTableCard());
   game.throwCard(parseInt(req.params.card));
 });
 

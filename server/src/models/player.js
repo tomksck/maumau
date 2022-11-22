@@ -48,6 +48,10 @@ export default class Player extends Model {
     this._cards.push(card);
   }
 
+  tryThrowCard(index) {
+    return this._cards[index];
+  }
+
   /**
    *
    * @param {Number} index Index of card to remove

@@ -108,14 +108,15 @@ export default class GameController extends EventEmitter {
   }
 
   throwCard(index) {
-    const card = this.#currentPlayer().throwCard(index);
+    const card = this.#currentPlayer().tryThrowCard(index);
     const topCard = this._table.getOpenCard();
     if (!card || !topCard) {
       this.emit('error', 'No card to throw');
     }
     const value = card.getValue();
     const color = card.getColor();
-    if (color === topCard.getColor() || value === topCard.getValue() || value === 14 || value === 8 || value === 11) {
+    if (color === topCard.getColor() || value === topCard.getValue()) {
+      this.#currentPlayer().throwCard(index);
       this._table.putCard(card);
       switch (value) {
         case 7:
