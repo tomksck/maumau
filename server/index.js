@@ -83,13 +83,12 @@ app.get('/game/turn', async (req, res) => {
   }
   game.removeAllListeners();
   game.once('newTurn', () => {
+    console.log(game.getPlayerName());
     const data = {
-      layout: 'layout.njk',
       message: 'New turn started!',
       player: game.getPlayerName(),
       url: '/game/turn/throw',
-      showCards: false,
-      text: 'Show Cards'
+      showCards: false
     };
     res.render('turn.njk', data);
   });
@@ -105,7 +104,6 @@ app.get('/game/turn/throw', async (req, res) => {
   const data = {
     player: game.getPlayerName(),
     message: 'Please throw a card or Take one',
-    layout: 'layout.njk',
     showCards: true,
     tableCard: { value: game.getTableCard().getValue(), color: game.getTableCard().getCssClass() },
     cardUrl: '/game/turn/throw/',
@@ -133,7 +131,7 @@ app.get('/game/turn/throw/:card', async (req, res) => {
     res.send(data);
   });
   game.once('playerWon', (player) => {
-    res.send(player.getName() + ' won! <br><a href="/game">New Game</a>');
+    res.send('<div class="center"><h1>' + player.getName() + ' won!</h1> <br><button onclick="window.location.href=\'/\'">Back to start</button></div>');
   });
   console.log('throwing ' + parseInt(req.params.card));
   console.log(game.getTableCard());
@@ -147,7 +145,13 @@ app.get('/game/turn/take', async (req, res) => {
   }
   game.removeAllListeners();
   game.once('tookCard', (player, card) => {
-    res.redirect('back');
+    const data = {
+      value: card.getValue(),
+      color: card.getCssClass(),
+      fade: true,
+      url: '/game/turn/throw/' + player.getCards().indexOf(card)
+    };
+    res.render('single_card.njk', data);
   });
   game.takeCard();
 });

@@ -1,5 +1,5 @@
 {%- macro card(params) -%}
-<div class="card__container" id="card__{{ params.url }}" {% if params.fade %} onclick="tryThrow('{{ params.url }}')" {% else %} onclick="location.href='{{params.url}}'" {% endif %}>
+<div class="card__container" id="card__{{ params.url }}" {% if params.fade %} onclick="tryThrow('{{ params.url }}')" {% else %} onclick="takeCard('{{params.url}}')" {% endif %}>
     <div class="card__image {% if params.in %} {{ params.in }} {% else %} new {% endif %}">
         {% if params.color %}
             <img class="grow" src="/assets/cards/{{params.color}}-{{params.value}}.png"></img>

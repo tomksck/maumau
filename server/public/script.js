@@ -4,12 +4,34 @@ function tryThrow(url) {
     if (data.error) {
       alert('Cannot Throw this card');
     } else {
-      fade(url);
+      fade(url, data);
     }
   });
 }
 
-function fade(url) {
+function takeCard(url) {
+  $.get(url, function (data) {
+    const cards = document.getElementById('handCards');
+    const entry = document.createElement('li');
+    entry.innerHTML = data;
+    console.log(entry);
+    cards.appendChild(entry);
+  });
+}
+
+function showCards(url) {
+  $.get(url, function (data) {
+    document.body.innerHTML = data;
+  });
+}
+
+function startGame(url) {
+  $.get(url, function (data) {
+    document.body.innerHTML = data;
+  });
+}
+
+function fade(url, data) {
   var element = document.getElementById('card__' + url);
   element.classList.add('fade');
   setTimeout(function () {
@@ -25,8 +47,9 @@ function fade(url) {
     for (const box of boxes) {
       box.classList.add('out');
     }
+
     setTimeout(function () {
-      window.location.href = location.href;
+      document.body.innerHTML = data;
     }, 500);
   }, 500);
 }

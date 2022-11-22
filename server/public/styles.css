@@ -48,6 +48,10 @@ body .card__collection ul {
 body .card__collection ul > li {
   display: flex;
 }
+body .card__collection ul > li .card__container {
+  max-height: 35%;
+  max-width: 100%;
+}
 body .card__collection ul > li .card__container.fade {
   -webkit-animation: superman-fly-up ease-in-out 0.5s forwards;
           animation: superman-fly-up ease-in-out 0.5s forwards;

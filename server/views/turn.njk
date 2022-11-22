@@ -1,5 +1,4 @@
-{% extends  layout %}
-{% block  content %}
+
   {%- from 'card.njk' import card -%}
   <h1>{{message}}</h1>
   <h2>It's {{player}}'s turn!</h2>
@@ -9,7 +8,7 @@
         {{ card({url: url, value: "back", in: 'in__right'}) }}
     </div>
     <div class="card__collection">
-      <ul>
+      <ul id="handCards">
         {% for mycard in cards %}
           {% set newCardUrl = [cardUrl, loop.index0] | join %}
           <li>{{ card({url: newCardUrl, value: mycard.value, color: mycard.color, fade: 1}) }}</li>
@@ -18,10 +17,7 @@
     </div>
   {% else %}
     <div class="container__show">
-      <form action="{{url}}" method="GET">
-        <input type="submit" value="Show Cards" />
-      </form>
+      <button onclick="showCards('{{url}}')">Show Cards</button>
     </div>
     <div class="card__collection"></div>
   {% endif %}
-{% endblock %}
