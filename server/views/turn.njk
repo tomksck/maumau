@@ -1,23 +1,26 @@
 
   {%- from 'card.njk' import card -%}
   <h1>{{message}}</h1>
-  <h2>It's {{player}}'s turn!</h2>
-  {% if showCards == true %}
+  <h2 class="turn__annotation">It's {{player}}'s turn!</h2>
+  <div class="turn__cards d-none">
     <div class="table__cards">
-        {{ card({value: tableCard.value, color: tableCard.color, in: 'in__left'})}}
-        {{ card({url: url, value: "back", in: 'in__right'}) }}
+        {{ card({value: tableCard.value, color: tableCard.color, in: 'in__left', id: 'tableCard'}) }}
+        {{ card({value: "back", in: 'in__right', id: 'takeCard'}) }}
     </div>
     <div class="card__collection">
       <ul id="handCards">
+        {#
         {% for mycard in cards %}
           {% set newCardUrl = [cardUrl, loop.index0] | join %}
           <li>{{ card({url: newCardUrl, value: mycard.value, color: mycard.color, fade: 1}) }}</li>
         {% endfor %}
+        #}
       </ul>
     </div>
-  {% else %}
+  </div>
+  <div class="turn__placeholder">
     <div class="container__show">
-      <button onclick="showCards('{{url}}')">Show Cards</button>
+      <h2>Waiting for other players...</h2>
     </div>
     <div class="card__collection"></div>
-  {% endif %}
+  </div>

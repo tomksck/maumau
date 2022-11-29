@@ -1,21 +1,19 @@
 {% extends  layout %}
 {% block  content %}
-  {% if playerCount %}
-    <form action="/game/players" method="post">
-      {% for i in range(0,playerCount) %}
-        <label class="text" for="player{{ i }}">Player {{ i }} Name</label>
-        <input type="text" name="player{{ i }}" id="player{{ i }}" /><br>
-      {% endfor %}
-      <input type="submit" value="Submit" />
-    </form>
-  {% else %}
-    <h1>New game started!</h1>
-    <p>Here are the players:</p>
-    <ul>
-      {% for  player  in  players %}
-        <li>{{player}}</li>
-      {% endfor %}
-    </ul>
-    <button onclick="startGame('{{url}}')">Start Game</button>
-  {% endif %}
+    <h1>Lobby</h1>
+    <h2>Waiting for players</h2>
+    <h2 class="player"></h2>
+
+    {# Display loading icon #}
+    <div class="d-flex align-items-center justify-content-center">
+      <div class="spinner eclipse"></div>
+    </div>
+
+    {# Display players #}
+
+    <div class="players"><ul></ul></div>
+
+    {# Display start button #}
+    
+    <button onclick="startGame()">Start Game</button>
 {% endblock %}

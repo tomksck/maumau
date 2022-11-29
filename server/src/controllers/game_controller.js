@@ -23,6 +23,10 @@ export default class GameController extends EventEmitter {
     return this._game !== null && this._table !== null && this._players !== null;
   }
 
+  getPlayerId() {
+    return this._game.getCurrentPlayer();
+  }
+
   /**
    *
    * @returns {String} player name

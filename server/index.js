@@ -2,24 +2,57 @@ import express from 'express';
 import nunjucks from 'nunjucks';
 import bodyParser from 'body-parser';
 import GameController from './src/controllers/game_controller.js';
+import WebSocket, { WebSocketServer } from 'ws';
+import http from 'http';
 import path from 'path';
 
-const PORT = process.env.PORT || 3000;
+const PORT = process.env.PORT || 6969;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/assets', express.static(path.resolve() + '/server/public'));
 
+var game = new GameController();
+const connections = [];
+
+const server = http.createServer(app).listen(PORT, () => {
+  console.log('Server is running on port ' + PORT);
+});
+const wss = new WebSocketServer({ server, path: '/ws', perMessageDeflate: false });
+
+wss.on('connection', function connection(ws) {
+  if (connections.length >= 4) {
+    ws.send('Game is full');
+    ws.close();
+    return;
+  }
+  console.log('Connection opened!');
+  for (let conn of connections) {
+    const data = { list_player: 'Player ' + (connections.length + 1) };
+    conn.send(JSON.stringify(data));
+  }
+  ws.on('message', function incoming(data) {
+    console.log('Received: %s', data);
+    handleMessage(this, data);
+  });
+  ws.on('close', function close() {
+    connections.splice(connections.indexOf(ws), 1);
+    console.log('Connection closed!');
+  });
+  connections.push(ws);
+  let player = 'Player ' + connections.length;
+  for (let i = 1; i < connections.length + 1; i++) {
+    const data = { list_player: 'Player ' + (i - 1) };
+    ws.send(JSON.stringify(data));
+  }
+  const data = { player: player };
+  ws.send(JSON.stringify(data));
+});
+
 nunjucks.configure('server/views', {
   autoescape: true,
   express: app
-});
-
-var game = new GameController();
-
-app.listen(PORT, () => {
-  console.log('Server is running on port ' + PORT);
 });
 
 app.get('/', async (req, res) => {
@@ -28,21 +61,81 @@ app.get('/', async (req, res) => {
   res.render('index.njk', data);
 });
 
+function handleMessage(ws, data) {
+  console.log('Received: %s', data);
+  data = JSON.parse(data);
+  if (data.startGame) {
+    startGame();
+  }
+}
+
+function startGame() {
+  game.once('newGame', () => {
+    console.log('New Game');
+    turn();
+  });
+  game.newGame(connections.length);
+}
+
+function turn() {
+  game.once('newTurn', () => {
+    console.log('Turn');
+    const gameData = JSON.stringify({
+      not_your_turn: nunjucks.render('turn.njk', {
+        layout: 'layout.njk',
+        message: 'Throw a Card!',
+        player: game.getPlayerName(),
+        tableCard: { value: game.getTableCard().getValue(), color: game.getTableCard().getCssClass() }
+      })
+    });
+    for (let conn of connections) {
+      conn.send(gameData);
+    }
+    const handCards = game.getPlayerCards().map((card, index) => {
+      return { value: card.getValue(), color: card.getCssClass(), index, fade: true };
+    });
+    console.log(handCards);
+    const cards = handCards.map((card) => {
+      return nunjucks.render('single_card.njk', card);
+    });
+    console.log(cards);
+    const data = JSON.stringify({
+      your_turn: cards,
+      player: 'Your Turn!'
+    });
+    connections[game.getPlayerId()].send(data);
+  });
+  game.nextTurn();
+}
+
+app.get('/game/turn/take', async (req, res) => {
+  if (!game.isRunning()) {
+    res.redirect('/');
+    return;
+  }
+  game.removeAllListeners();
+  game.once('tookCard', (player, card) => {
+    const data = {
+      value: card.getValue(),
+      color: card.getCssClass(),
+      fade: true,
+      url: '/game/turn/throw/' + player.getCards().indexOf(card)
+    };
+    res.render('single_card.njk', data);
+  });
+  game.takeCard();
+});
+
 app.get('/game', async (req, res) => {
   if (game == null) {
     res.redirect('/');
     return;
   }
-  game.removeAllListeners();
-  game.once('newGame', () => {
-    const data = {
-      players: game.getPlayerNames(),
-      layout: 'layout.njk',
-      url: '/game/turn'
-    };
-    res.render('game.njk', data);
-  });
-  game.newGame(2);
+  const data = {
+    layout: 'layout.njk',
+    url: '/game/turn'
+  };
+  res.render('game.njk', data);
 });
 
 app.post('/game', async (req, res) => {
@@ -136,24 +229,6 @@ app.get('/game/turn/throw/:card', async (req, res) => {
   console.log('throwing ' + parseInt(req.params.card));
   console.log(game.getTableCard());
   game.throwCard(parseInt(req.params.card));
-});
-
-app.get('/game/turn/take', async (req, res) => {
-  if (!game.isRunning()) {
-    res.redirect('/');
-    return;
-  }
-  game.removeAllListeners();
-  game.once('tookCard', (player, card) => {
-    const data = {
-      value: card.getValue(),
-      color: card.getCssClass(),
-      fade: true,
-      url: '/game/turn/throw/' + player.getCards().indexOf(card)
-    };
-    res.render('single_card.njk', data);
-  });
-  game.takeCard();
 });
 
 app.use(function (req, res, next) {
