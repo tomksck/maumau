@@ -121,7 +121,7 @@ function turn() {
         tableCard: { value: game.getTableCard().getValue(), color: game.getTableCard().getCssClass() }
       })
     });
-    broadcast(gameData, ws);
+    broadcast(gameData);
     const handCards = game.getPlayerCards().map((card, index) => {
       return { value: card.getValue(), color: card.getCssClass(), index, fade: true };
     });

@@ -8,13 +8,13 @@
       alert('Cannot Throw this card');
       return;
     }
-    if (data.newGame) {
+    if (data.newGame !== undefined) {
       let fullDoc = document.createElement('html');
       fullDoc.innerHTML = data.newGame;
       document.body.innerHTML = fullDoc.querySelector('body').innerHTML;
       return;
     }
-    if (data.not_your_turn) {
+    if (data.not_your_turn !== undefined) {
       let fullDoc = document.createElement('html');
       fullDoc.innerHTML = data.not_your_turn;
       document.body.innerHTML = fullDoc.querySelector('body').innerHTML;
@@ -23,7 +23,7 @@
       return;
     }
 
-    if (data.your_turn) {
+    if (data.your_turn !== undefined) {
       let cards = data.your_turn;
       let handCards = document.getElementById('handCards');
       for (let card of cards) {
@@ -33,10 +33,12 @@
       }
       document.querySelector('.turn__placeholder').classList.add('d-none');
       document.querySelector('.turn__cards').classList.remove('d-none');
+
+      document.querySelectorAll('.table__cards .card__container').forEach((item) => (item.disabled = false));
       return;
     }
 
-    if (data.cards) {
+    if (data.cards !== undefined) {
       const cards = document.getElementById('handCards');
       cards.innerHTML = '';
       for (const card of data.cards) {
@@ -47,12 +49,12 @@
       return;
     }
 
-    if (data.threw_card) {
+    if (data.threw_card !== undefined) {
       fade(data.threw_card);
       return;
     }
 
-    if (data.takeCard) {
+    if (data.takeCard !== undefined) {
       const card = data.takeCard;
       const cards = document.getElementById('handCards');
       const entry = document.createElement('li');
@@ -62,7 +64,7 @@
       return;
     }
 
-    if (data.tableCard) {
+    if (data.tableCard !== undefined) {
       const tableCards = document.querySelectorAll('.table__cards .card__container');
 
       tableCards[0].querySelector('.card__image').classList.remove('out__left');
@@ -77,13 +79,13 @@
       return;
     }
 
-    if (data.player) {
+    if (data.player !== undefined) {
       const player = document.querySelector('.player');
       player.innerHTML = 'Welcome ' + data.player;
       return;
     }
 
-    if (data.list_player) {
+    if (data.list_player !== undefined) {
       const players = document.querySelector('.players ul');
       const player = document.createElement('li');
       player.innerHTML = data.list_player;
@@ -91,7 +93,7 @@
       return;
     }
 
-    if (data.remove_list_player) {
+    if (data.remove_list_player !== undefined) {
       let index = data.remove_list_player;
       const players = document.querySelector('.players ul');
       players.removeChild(players.childNodes[index]);
@@ -146,7 +148,8 @@ function tryThrow(id) {
   ws.send(JSON.stringify(data));
 }
 
-function takeCard() {
+function takeCard(obj) {
+  if (obj.classList.contains('disabled')) return;
   let ws = window.ws;
   if (!ws) {
     showMessage('No WebSocket connection :(');

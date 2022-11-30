@@ -1,5 +1,5 @@
 {%- macro card(params) -%}
-<div class="card__container" id="card__{{ params.id }}" {% if params.fade %} onclick="tryThrow({{ params.id }})" {% else %} onclick="takeCard()" {% endif %}>
+<div class="card__container" id="card__{{ params.id }}" {% if params.fade %} onclick="tryThrow({{ params.id }});" {% else %} onclick="takeCard(this);" {% endif %}>
     <div class="card__image {% if params.in %} {{ params.in }} {% else %} new {% endif %}">
         {% if params.color %}
             <img class="grow" src="/assets/cards/{{params.color}}-{{params.value}}.png"></img>
