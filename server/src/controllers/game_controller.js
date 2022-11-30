@@ -140,7 +140,7 @@ export default class GameController extends EventEmitter {
         this.emit('playerWon', this.#currentPlayer());
         return;
       }
-      this.emit('threwCard', this.#currentPlayer(), card);
+      this.emit('threwCard', this.getPlayerId(), index);
     } else {
       this.#currentPlayer().takeCard(card);
       this.emit('cardNotThrown');

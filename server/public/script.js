@@ -3,6 +3,7 @@
 
   function handleData(data) {
     data = JSON.parse(data);
+    console.log(data);
     if (data.error) {
       alert('Cannot Throw this card');
       return;
@@ -18,7 +19,7 @@
       fullDoc.innerHTML = data.not_your_turn;
       document.body.innerHTML = fullDoc.querySelector('body').innerHTML;
       document.querySelector('.turn__cards').classList.remove('d-none');
-      document.querySelectorAll('.table__cards .card__container').forEach((item) => item.removeAttribute('onclick'));
+      document.querySelectorAll('.table__cards .card__container').forEach((item) => (item.disabled = true));
       return;
     }
 
@@ -43,6 +44,11 @@
         entry.innerHTML = card;
         cards.appendChild(entry);
       }
+      return;
+    }
+
+    if (data.threw_card) {
+      fade(data.threw_card);
       return;
     }
 
@@ -84,6 +90,13 @@
       players.appendChild(player);
       return;
     }
+
+    if (data.remove_list_player) {
+      let index = data.remove_list_player;
+      const players = document.querySelector('.players ul');
+      players.removeChild(players.childNodes[index]);
+      return;
+    }
   }
 
   function init() {
@@ -123,7 +136,15 @@ function startGame() {
   ws.send(JSON.stringify(data));
 }
 
-function tryThrow(id) {}
+function tryThrow(id) {
+  let ws = window.ws;
+  if (!ws) {
+    showMessage('No WebSocket connection :(');
+    return;
+  }
+  const data = { throwCard: id };
+  ws.send(JSON.stringify(data));
+}
 
 function takeCard() {
   let ws = window.ws;
@@ -141,8 +162,9 @@ function showCards(url) {
   });
 }
 
-function fade(url, data) {
-  const element = document.getElementById('card__' + url);
+function fade(id) {
+  const element = document.getElementById('card__' + id);
+  console.log(element);
   element.classList.add('fade');
   setTimeout(function () {
     const tableCards = document.querySelectorAll('.table__cards .card__container');
@@ -157,9 +179,5 @@ function fade(url, data) {
     for (const box of boxes) {
       box.classList.add('out');
     }
-
-    setTimeout(function () {
-      document.body.innerHTML = data;
-    }, 500);
   }, 500);
 }
