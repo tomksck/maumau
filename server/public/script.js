@@ -54,8 +54,8 @@
       return;
     }
 
-    if (data.takeCard !== undefined) {
-      const card = data.takeCard;
+    if (data.take_card !== undefined) {
+      const card = data.take_card;
       const cards = document.getElementById('handCards');
       const entry = document.createElement('li');
       entry.innerHTML = card;

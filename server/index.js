@@ -32,6 +32,13 @@ game.on('cardNotThrown', () => {
   };
   connections[game.getPlayerId()].send(JSON.stringify(data));
 });
+game.on('tookCard', (player, card) => {
+  console.log('Took Card');
+  const data = {
+    take_card: nunjucks.render('single_card.njk', { value: card.getValue(), color: card.getCssClass(), index: player.getCards().indexOf(card), fade: true })
+  };
+  connections[game.getPlayerId()].send(JSON.stringify(data));
+});
 game.on('playerWon', (player) => {});
 
 const connections = [];
@@ -98,6 +105,10 @@ function handleMessage(ws, data) {
     console.log('Throw Card');
     console.log(data.throwCard);
     game.throwCard(data.throwCard);
+  }
+  if (data.takeCard !== undefined) {
+    console.log('Take Card');
+    game.takeCard();
   }
 }
 
