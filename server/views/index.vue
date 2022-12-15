@@ -1,9 +1,18 @@
-{% extends  layout %}
-{% block  content %}
+<script>
+  export default {
+    data() {
+      return {
+        message: 'Welcome to MauMau'
+      };
+    }
+  };
+</script>
+
+<template>
   <h1>{{message}}</h1>
   <p>The Game you are about to play is MauMau. An easy to learn card game where each player gets a 
-    hand full of cards with the goal to get rid of said cards.</br>
-    To achieve this goal the players must throw cards according to some easy rules, depending on the table card.</br>
+    hand full of cards with the goal to get rid of said cards.
+    To achieve this goal the players must throw cards according to some easy rules, depending on the table card.
   </p>
   <h2>Rules</h2>
   <p>
@@ -16,8 +25,7 @@
       <li>The Ace can be played on any card, but the next player must then draw four cards from the stack.</li>
     </ul>
   </p>
-  {# post button with input field #}
   <form action={{url}} method="get">
     <input type="submit" value="Start Quick Game">
   </form>
-{% endblock %}
+</template>
