@@ -1,5 +1,4 @@
 import express from 'express';
-import nunjucks from 'nunjucks';
 import bodyParser from 'body-parser';
 import GameController from './src/controllers/game_controller.js';
 import WebSocket, { WebSocketServer } from 'ws';
@@ -13,6 +12,7 @@ const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 app.use('/assets', express.static(path.resolve() + '/server/public'));
+app.use('/vies', express.static(path.resolve() + '/server/views'));
 
 var game = new GameController();
 
@@ -82,14 +82,8 @@ wss.on('connection', function connection(ws) {
   ws.send(JSON.stringify(data));
 });
 
-nunjucks.configure('server/views', {
-  autoescape: true,
-  express: app
-});
-
 app.get('/', async (req, res) => {
-  const data = { title: 'MauMau', message: 'Welcome to MauMau!', layout: 'layout.njk', url: '/game' };
-  res.render('index.njk', data);
+  res.render('views/index');
 });
 
 function handleMessage(ws, data) {
