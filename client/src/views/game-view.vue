@@ -8,7 +8,7 @@
   </div>
   <div>
     <ul>
-      <li v-for="player in players" :key="player.id">{{ player.name }}</li>
+      <li v-for="player in players" :key="player.id">{{ player }}</li>
     </ul>
   </div>
   <button @click="startGame()">Start Game</button>
@@ -25,17 +25,32 @@ export default {
   },
   methods: {
     startGame() {
-      this.$socket.emit('startGame');
+      this.$root.connection.send('{"startGame":true}');
+    },
+    handleMessage(event) {
+      const data = JSON.parse(event.data);
+      console.log(data);
+      if (data.list_player !== undefined) {
+        this.players.push(data.list_player);
+      }
+      if (data.player !== undefined) {
+        this.player = data.player;
+      }
+      if (data.start_game !== undefined) {
+        this.$router.push('/turn');
+      }
     }
   },
   mounted() {
-    this.$socket.emit('getPlayers');
-    this.$socket.on('players', (players) => {
-      this.players = players;
-    });
-    this.$socket.on('player', (player) => {
-      this.player = player;
-    });
+    this.$root.connection = new WebSocket('ws://localhost:6969/ws');
+    this.$root.connection.onmessage = function (event) {
+      console.log(event);
+      this.handleMessage(event);
+    }.bind(this);
+    this.$root.connection.onopen = function (event) {
+      console.log(event);
+      console.log('Successfully connected to the echo websocket server...');
+    };
   }
 };
 </script>

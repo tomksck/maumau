@@ -3,11 +3,19 @@
   <h2 class="turn__annotation">It's {{ player }}'s turn!</h2>
   <div class="turn__cards d-none">
     <div class="table__cards">
-      <card value="{{tableCard.value}}" color="{{tableCard.color}}" in="in__left" id="tableCard" }) />
-      <card value="back" in="in__right" id="takeCard" />
+      <CardComponent value="{{tableCard.value}}" color="{{tableCard.color}}" in="in__left" id="tableCard" tablecard="true" }) />
+      <CardComponent value="back" in="in__right" id="takeCard" active="{{ your_turn }}" tablecard="true" />
     </div>
     <div class="card__collection">
-      <card v-for="card in handCards" value="{{card.value}}" color="{{card.color}}" id="{{card.id}}" handcard="true" />
+      <CardComponent
+        v-for="card in handCards"
+        v-bind:key="card.id"
+        value="{{card.value}}"
+        color="{{card.color}}"
+        id="{{card.id}}"
+        handcard="true"
+        active="{{ card.active }}"
+      />
     </div>
   </div>
   <div class="turn__placeholder">
@@ -19,11 +27,19 @@
 </template>
 
 <script>
-import card from './components/card.vue';
+import CardComponent from './components/card-component.vue';
 
 export default {
   name: 'turnView',
-  props: ['player', 'tableCard', 'handCards', 'message'],
+  data() {
+    return {
+      player: '',
+      tableCard: {},
+      handCards: [],
+      message: '',
+      your_turn: false
+    };
+  },
   methods: {
     addHandCard(card) {
       const handCards = this.handCards;
@@ -41,8 +57,24 @@ export default {
     },
     setMessage(message) {
       this.message = message;
+    },
+    handleMessage(event) {
+      const data = JSON.parse(event);
+      console.log(data);
+      if (data.your_turn != undefined) {
+        this.your_turn = true;
+      }
     }
   },
-  components: { card }
+  mounted() {
+    if (this.$root.connection == null) {
+      return;
+    }
+    this.$root.connection.onmessage = function (event) {
+      console.log(event);
+      this.handleMessage(event);
+    }.bind(this);
+  },
+  components: { CardComponent }
 };
 </script>

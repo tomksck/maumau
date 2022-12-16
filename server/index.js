@@ -109,7 +109,10 @@ function handleMessage(ws, data) {
 function startGame() {
   game.once('newGame', () => {
     console.log('New Game');
-    turn();
+    broadcast({ start_game: true });
+    setTimeout(() => {
+      turn();
+    }, 600);
   });
   game.newGame(connections.length);
 }
@@ -119,22 +122,17 @@ function turn() {
     console.log('Turn');
     let ws = connections[game.getPlayerId()];
     const gameData = JSON.stringify({
-      not_your_turn: nunjucks.render('turn.njk', {
-        layout: 'layout.njk',
-        message: 'Throw a Card!',
-        player: game.getPlayerName(),
-        tableCard: { value: game.getTableCard().getValue(), color: game.getTableCard().getCssClass() }
-      })
+      not_your_turn: true,
+      active_player: game.getPlayerName(),
+      table_card: { value: game.getTableCard().getValue(), color: game.getTableCard().getCssClass() }
     });
     broadcast(gameData);
     const handCards = game.getPlayerCards().map((card, index) => {
       return { value: card.getValue(), color: card.getCssClass(), index, fade: true };
     });
-    const cards = handCards.map((card) => {
-      return nunjucks.render('single_card.njk', card);
-    });
     const data = JSON.stringify({
-      your_turn: cards,
+      your_turn: true,
+      hand_cards: handCards,
       player: 'Your Turn!'
     });
     ws.send(data);
