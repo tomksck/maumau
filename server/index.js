@@ -4,15 +4,15 @@ import GameController from './src/controllers/game_controller.js';
 import WebSocket, { WebSocketServer } from 'ws';
 import http from 'http';
 import path from 'path';
-import { match } from 'assert';
 
 const PORT = process.env.PORT || 6969;
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-app.use('/assets', express.static(path.resolve() + '/server/public'));
-app.use('/vies', express.static(path.resolve() + '/server/views'));
+app.use(express.static(path.resolve() + '/client/dist/'));
+app.use('/assets', express.static(path.resolve() + '/client/public/assets/'));
+app.use('main.js', express.static(path.resolve() + '/client/src/main.js'));
 
 var game = new GameController();
 
@@ -83,7 +83,7 @@ wss.on('connection', function connection(ws) {
 });
 
 app.get('/', async (req, res) => {
-  res.render('views/index');
+  res.sendFile(path.resolve() + '/client/dist/index.html');
 });
 
 function handleMessage(ws, data) {
@@ -141,52 +141,3 @@ function turn() {
   });
   game.nextTurn();
 }
-
-app.get('/game/turn/take', async (req, res) => {
-  if (!game.isRunning()) {
-    res.redirect('/');
-    return;
-  }
-  game.removeAllListeners();
-  game.once('tookCard', (player, card) => {
-    const data = {
-      value: card.getValue(),
-      color: card.getCssClass(),
-      fade: true,
-      url: '/game/turn/throw/' + player.getCards().indexOf(card)
-    };
-    res.render('single_card.njk', data);
-  });
-  game.takeCard();
-});
-
-app.get('/game', async (req, res) => {
-  if (game == null) {
-    res.redirect('/');
-    return;
-  }
-  const data = {
-    layout: 'layout.njk',
-    url: '/game/turn'
-  };
-  res.render('game.njk', data);
-});
-
-app.use(function (req, res, next) {
-  res.status(404);
-
-  // respond with html page
-  if (req.accepts('html')) {
-    res.render('040.njk', { layout: 'layout.njk' });
-    return;
-  }
-
-  // respond with json
-  if (req.accepts('json')) {
-    res.json({ error: 'Not found' });
-    return;
-  }
-
-  // default to plain-text. send()
-  res.type('txt').send('Not found');
-});

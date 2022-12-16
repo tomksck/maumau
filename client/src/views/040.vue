@@ -5,3 +5,9 @@
     <button onclick="history.back()">Go Back</button>
   </div>
 </template>
+
+<script>
+export default {
+  name: '404'
+};
+</script>

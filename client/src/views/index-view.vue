@@ -1,13 +1,3 @@
-<script>
-  export default {
-    data() {
-      return {
-        message: 'Welcome to MauMau'
-      };
-    }
-  };
-</script>
-
 <template>
   <h1>{{message}}</h1>
   <p>The Game you are about to play is MauMau. An easy to learn card game where each player gets a 
@@ -25,7 +15,21 @@
       <li>The Ace can be played on any card, but the next player must then draw four cards from the stack.</li>
     </ul>
   </p>
-  <form action={{url}} method="get">
-    <input type="submit" value="Start Quick Game">
-  </form>
+  <button @click="startGame()">Go to Game Lobby</button>
 </template>
+
+<script>
+  export default {
+    name: 'indexView',
+    data() {
+      return {
+        message: 'Welcome to MauMau'
+      };
+    },
+    methods: {
+      startGame() {
+        this.$router.push('/game');
+      }
+    }
+  };
+</script>
