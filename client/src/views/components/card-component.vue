@@ -1,41 +1,36 @@
 <template>
-  <div v-if="handcard == true" class="card__container" id="card__{{ id }}" onclick="tryThrow({{ id }});">
+  <div v-if="handcard" :class="`card__container ${fade}`" :id="card__id" @click="tryThrow(id)">
     <div class="card__image new">
-      <img class="grow" src="/assets/cards/{{color}}-{{value}}.png" />
+      <img class="grow" :src="imageUrl" />
     </div>
   </div>
-  <div v-if="tablecard == true" class="card__container" id="card__{{ id }}" onclick="takeCard(this);">
-    <div class="card__image {{ in }}">
-      <img v-if="color" class="grow" src="/assets/cards/{{color}}-{{value}}.png" />
-      <img v-else class="grow" src="/assets/cards/{{value}}.png" />
+  <div v-else class="card__container" :id="`card__${id}`" @click="takeCard(this)">
+    <div :class="`card__image ${fly_in}`">
+      <img class="grow" :src="imageUrl" />
     </div>
   </div>
 </template>
 
 <script>
-function showMessage(msg) {
-  console.log(msg);
-}
 export default {
-  name: 'cardComponent',
-  props: ['color', 'value', 'id', 'handcard', 'tablecard', 'in', 'active'],
+  name: 'CardComponent',
+  props: ['color', 'value', 'id', 'handcard', 'tablecard', 'fly_in', 'active', 'fade'],
+  computed: {
+    imageUrl: function () {
+      return this.color ? `/assets/cards/${this.color}-${this.value}.png` : '/assets/cards/back.png';
+    },
+    card__id: function () {
+      return `card__${this.id}`;
+    }
+  },
   methods: {
     tryThrow(id) {
-      if (this.active === 'false') return;
-      const ws = window.ws;
-      const data = { throwCard: id };
-      ws.send(JSON.stringify(data));
+      if (!this.active) return;
+      this.$root.connection.send(JSON.stringify({ tryThrow: id }));
     },
-    takeCard(obj) {
-      if (this.active === 'false') return;
-      if (obj.classList.contains('disabled')) return;
-      let ws = window.ws;
-      if (!ws) {
-        showMessage('No WebSocket connection :(');
-        return;
-      }
-      const data = { takeCard: true };
-      ws.send(JSON.stringify(data));
+    takeCard() {
+      if (!this.active) return;
+      this.$root.connection.send(JSON.stringify({ takeCard: true }));
     }
   }
 };

@@ -28,18 +28,28 @@ game.on('threwCard', (player, card) => {
 });
 game.on('cardNotThrown', () => {
   const data = {
-    error: 'Retry'
+    error: 'invalid_card'
   };
   connections[game.getPlayerId()].send(JSON.stringify(data));
 });
 game.on('tookCard', (player, card) => {
   console.log('Took Card');
   const data = {
-    take_card: nunjucks.render('single_card.njk', { value: card.getValue(), color: card.getCssClass(), index: player.getCards().indexOf(card), fade: true })
+    took_card: { value: card.getValue(), color: card.getCssClass(), index: player.getCards().indexOf(card) }
   };
   connections[game.getPlayerId()].send(JSON.stringify(data));
 });
-game.on('playerWon', (player) => {});
+game.on('playerWon', (player) => {
+  const data = {
+    player_won: player.getName()
+  };
+  broadcast(JSON.stringify(data));
+  game = new GameController();
+  connections.forEach((conn) => {
+    conn.close();
+  });
+  connections.length = 0;
+});
 
 const connections = [];
 
@@ -95,10 +105,10 @@ function handleMessage(ws, data) {
     }
     startGame();
   }
-  if (data.throwCard !== undefined) {
+  if (data.tryThrow !== undefined) {
     console.log('Throw Card');
-    console.log(data.throwCard);
-    game.throwCard(data.throwCard);
+    console.log(data.tryThrow);
+    game.throwCard(data.tryThrow);
   }
   if (data.takeCard !== undefined) {
     console.log('Take Card');
@@ -128,7 +138,7 @@ function turn() {
     });
     broadcast(gameData);
     const handCards = game.getPlayerCards().map((card, index) => {
-      return { value: card.getValue(), color: card.getCssClass(), index, fade: true };
+      return { value: card.getValue(), color: card.getCssClass(), index };
     });
     const data = JSON.stringify({
       your_turn: true,
