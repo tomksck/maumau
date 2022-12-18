@@ -1,7 +1,10 @@
-
 ## Prequesites:
 
 - NodeJS (with npm)
+
+### Prefered:
+
+- `pnpm` for faster building with npm
 
 ## Install dependencies:
 
@@ -15,8 +18,7 @@ cd client && npm install & npm install
 npm start
 ```
 
-This will build the VUE.js project and start an express.js Server that listens on ```localhost:6969```
-
+This will build the VUE.js project and start an express.js Server that listens on `localhost:6969`
 
 ## MauMau
 
