@@ -14,42 +14,45 @@ app.use(express.static(path.resolve() + '/client/dist/'));
 app.use('/assets', express.static(path.resolve() + '/client/public/assets/'));
 app.use('main.js', express.static(path.resolve() + '/client/src/main.js'));
 
-var game = new GameController();
+var game = null;
 
-game.on('threwCard', (player, card) => {
-  console.log('Threw Card');
-  const data = {
-    threw_card: card
-  };
-  connections[player].send(JSON.stringify(data));
-  setTimeout(() => {
-    turn();
-  }, 600);
-});
-game.on('cardNotThrown', () => {
-  const data = {
-    error: 'invalid_card'
-  };
-  connections[game.getPlayerId()].send(JSON.stringify(data));
-});
-game.on('tookCard', (player, card) => {
-  console.log('Took Card');
-  const data = {
-    took_card: { value: card.getValue(), color: card.getCssClass(), index: player.getCards().indexOf(card) }
-  };
-  connections[game.getPlayerId()].send(JSON.stringify(data));
-});
-game.on('playerWon', (player) => {
-  const data = {
-    player_won: player.getName()
-  };
-  broadcast(JSON.stringify(data));
+function configureGame() {
   game = new GameController();
-  connections.forEach((conn) => {
-    conn.close();
+  game.on('threwCard', (player, card) => {
+    console.log('Threw Card');
+    const data = {
+      threw_card: card
+    };
+    connections[player].send(JSON.stringify(data));
+    setTimeout(() => {
+      turn();
+    }, 600);
   });
-  connections.length = 0;
-});
+  game.on('cardNotThrown', () => {
+    const data = {
+      error: 'invalid_card'
+    };
+    connections[game.getPlayerId()].send(JSON.stringify(data));
+  });
+  game.on('tookCard', (player, card) => {
+    console.log('Took Card');
+    const data = {
+      took_card: { value: card.getValue(), color: card.getCssClass(), index: player.getCards().indexOf(card) }
+    };
+    connections[game.getPlayerId()].send(JSON.stringify(data));
+  });
+  game.on('playerWon', (player) => {
+    const data = {
+      player_won: player.getName()
+    };
+    broadcast(JSON.stringify(data));
+    game = null;
+    connections.forEach((conn) => {
+      conn.close();
+    });
+    connections.length = 0;
+  });
+}
 
 const connections = [];
 
@@ -68,6 +71,11 @@ function broadcast(data, exclude) {
 wss.on('connection', function connection(ws) {
   if (connections.length >= 4) {
     ws.send('Game is full');
+    ws.close();
+    return;
+  }
+  if (game !== null) {
+    ws.send('Game is already running');
     ws.close();
     return;
   }
@@ -95,6 +103,9 @@ wss.on('connection', function connection(ws) {
 app.get('/', async (req, res) => {
   res.sendFile(path.resolve() + '/client/dist/index.html');
 });
+app.get('/*', function (req, res) {
+  res.redirect('/');
+});
 
 function handleMessage(ws, data) {
   console.log('Received: %s', data);
@@ -117,6 +128,7 @@ function handleMessage(ws, data) {
 }
 
 function startGame() {
+  configureGame();
   game.once('newGame', () => {
     console.log('New Game');
     broadcast({ start_game: true });

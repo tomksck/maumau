@@ -48,6 +48,11 @@ export default {
     };
   },
   methods: {
+    handleBeforeUnload(event) {
+      // Display a confirmation message to the user
+      event.preventDefault();
+      return (event.returnValue = 'Do you really want to leave the game?');
+    },
     addHandCard(card) {
       card.active = true;
       this.handCards.push(card);
@@ -114,13 +119,16 @@ export default {
     }
   },
   mounted() {
-    if (this.$root.connection == null) {
-      return;
+    window.addEventListener('beforeunload', this.handleBeforeUnload);
+    if (this.$root.connection != null) {
+      this.$root.connection.onmessage = function (event) {
+        console.log(event);
+        this.handleMessage(event);
+      }.bind(this);
     }
-    this.$root.connection.onmessage = function (event) {
-      console.log(event);
-      this.handleMessage(event);
-    }.bind(this);
+  },
+  beforeUnmount() {
+    window.removeEventListener('beforeunload', this.handleBeforeUnload);
   },
   components: { CardComponent }
 };
