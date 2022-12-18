@@ -54,7 +54,7 @@ export default {
     this.$root.connection.onclose = function () {
       console.log('Connection closed');
       this.$router.push('/');
-    };
+    }.bind(this);
   }
 };
 </script>

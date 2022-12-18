@@ -70,12 +70,12 @@ function broadcast(data, exclude) {
 
 wss.on('connection', function connection(ws) {
   if (connections.length >= 4) {
-    ws.send('Game is full');
+    ws.send(JSON.stringify({ message: 'Game is full' }));
     ws.close();
     return;
   }
   if (game !== null) {
-    ws.send('Game is already running');
+    ws.send(JSON.stringify({ message: 'Game is already running' }));
     ws.close();
     return;
   }
