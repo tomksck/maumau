@@ -125,6 +125,13 @@ export default {
         console.log(event);
         this.handleMessage(event);
       }.bind(this);
+      this.$root.connection.onclose = function (event) {
+        console.log(event);
+        this.setMessage('Connection lost! Returning to lobby...');
+        setTimeout(() => {
+          this.$router.push('/game');
+        }, 3000);
+      }.bind(this);
     }
   },
   beforeUnmount() {

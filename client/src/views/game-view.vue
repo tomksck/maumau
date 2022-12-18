@@ -51,6 +51,10 @@ export default {
       console.log(event);
       console.log('Successfully connected to the echo websocket server...');
     };
+    this.$root.connection.onclose = function () {
+      console.log('Connection closed');
+      this.$router.push('/');
+    };
   }
 };
 </script>
