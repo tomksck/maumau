@@ -4,9 +4,6 @@
   <h2 v-else class="turn__annotation">It's {{ player }}'s turn!</h2>
 
   <div v-if="!your_turn" class="turn__placeholder">
-    <div class="container__show">
-      <h2>Waiting for other players...</h2>
-    </div>
     <div class="card__collection"></div>
   </div>
   <div class="turn__cards">
