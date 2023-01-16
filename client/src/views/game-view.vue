@@ -42,7 +42,7 @@ export default {
     }
   },
   mounted() {
-    this.$root.connection = new WebSocket('ws://localhost:6969/ws');
+    if (this.$root.connection == null) this.$root.connection = new WebSocket('ws://localhost:6969/ws');
     this.$root.connection.onmessage = function (event) {
       console.log(event);
       this.handleMessage(event);
@@ -52,8 +52,9 @@ export default {
       console.log('Successfully connected to the echo websocket server...');
     };
     this.$root.connection.onclose = function () {
-      console.log('Connection closed');
-      this.$router.push('/');
+      console.log('Connection lost');
+      this.$root.connection = null;
+      this.$router.push('/connection');
     }.bind(this);
   }
 };
