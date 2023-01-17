@@ -3,6 +3,7 @@ logs
 *.log
 npm-debug.log*
 pnpm-lock.yaml
+package-lock.json
 yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
